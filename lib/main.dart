@@ -19,7 +19,7 @@ class MusicApp extends StatefulWidget {
 class _MusicAppState extends State<MusicApp> {
   int currentIndex = 0;
 
-  final screens = [const Home(), const Search(), const Playlist()];
+  final screens = [Home(), const Search(), const Playlist()];
 
   @override
   Widget build(BuildContext context) {

@@ -83,6 +83,7 @@ class _PlaylistState extends State<Playlist> {
                   MaterialPageRoute(builder: (context) => const PlayOne()),
                 );
               },
+              onLongPress: (){},
             ),
             ListTile(
               leading: const Icon(
@@ -101,6 +102,7 @@ class _PlaylistState extends State<Playlist> {
                   MaterialPageRoute(builder: (context) => const PlayTwo()),
                 );
               },
+              onLongPress: () {},
             ),
           ],
         ));

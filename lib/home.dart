@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:music/asset.dart';
+import 'package:music/muix.dart';
 import 'package:music/settings.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 // import 'package:music/widget.dart';
@@ -17,10 +19,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
   final OnAudioQuery _audioQuery = OnAudioQuery();
   final a = Asamp();
-  
+
+  final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer.withId("0");
+
   @override
   void initState() {
     super.initState();
@@ -32,9 +35,29 @@ class _HomeState extends State<Home> {
       bool permissionStatus = await _audioQuery.permissionsStatus();
       if (!permissionStatus) {
         await _audioQuery.permissionsRequest();
+        //      }
+        // allsong = await _audioQuery.querySongs();
+
+        // allsong.forEach((element) {
+        //   audiosongs.add(Audio.file(element.uri.toString(),
+        //       metas: Metas(
+        //           title: element.title,
+        //           id: element.id.toString(),
+        //           artist: element.artist)));
+        // });
         setState(() {});
       }
     }
+  }
+
+  void openPlayer() async {
+    print("g");
+    await _assetsAudioPlayer.open(
+      Playlist(audios: a.audios, startIndex: 0),
+      showNotification: true,
+      autoStart: true,
+      
+    );
   }
 
   @override
@@ -117,7 +140,16 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 onTap: () {
-                  a.oppenAsset(item.data,index);
+                  // a.oppenAsset(item.data, index)(item.data, index);
+                  openPlayer();
+
+                  {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Play()),
+                    );
+                  }
+                  ;
                 },
                 leading: QueryArtworkWidget(
                   id: item.data![index].id,
