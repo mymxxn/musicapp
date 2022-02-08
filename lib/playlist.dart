@@ -17,7 +17,7 @@ class _PlaylistState extends State<Playlist> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(25, 20, 20, 100),
+          backgroundColor: Colors.transparent,
           title: const Text(
             "Playlist",
             style: TextStyle(

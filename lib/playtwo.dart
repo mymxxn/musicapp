@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:music/muix.dart';
 
 class PlayTwo extends StatefulWidget {
   const PlayTwo({Key? key}) : super(key: key);
@@ -65,21 +64,16 @@ class _PlayTwoState extends State<PlayTwo> {
       title: Text(
         song,
         style:
-            TextStyle(color: Color.fromRGBO(194, 194, 194, 100), fontSize: 20),
+            const TextStyle(color: Color.fromRGBO(194, 194, 194, 100), fontSize: 20),
       ),
       subtitle: Text(
         arist,
         style:
-            TextStyle(color: Color.fromRGBO(194, 194, 194, 100), fontSize: 15),
+            const TextStyle(color: Color.fromRGBO(194, 194, 194, 100), fontSize: 15),
       ),
       trailing: const FaIcon(FontAwesomeIcons.ellipsisV,
           color: Color.fromRGBO(194, 194, 194, 100)),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Play()),
-        );
-      },
+     
     );
   }
 }

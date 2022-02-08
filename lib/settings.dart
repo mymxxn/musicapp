@@ -14,7 +14,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(25, 20, 20, 100),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(25, 20, 20, 100),
+        backgroundColor:Colors.transparent,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -71,12 +71,12 @@ class _SettingsState extends State<Settings> {
   Widget sett(text, icon) {
     return ListTile(
       leading: IconButton(
-        icon: Icon(icon, color: Color.fromRGBO(194, 194, 194, 100)),
+        icon: Icon(icon, color: const Color.fromRGBO(194, 194, 194, 100)),
         onPressed: () => Navigator.pop(context),
       ),
       title: Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
             color: Colors.grey, fontSize: 18, fontWeight: FontWeight.w500),
       ),
     );
@@ -84,13 +84,13 @@ class _SettingsState extends State<Settings> {
 }
 
 Widget bottom() => Column(
-      children: [
-        const Text(
+      children: const [
+        Text(
           "Version",
           style: TextStyle(
               color: Color.fromRGBO(194, 194, 194, 100), fontSize: 20),
         ),
-        const Text(
+        Text(
           "1.0.0",
           style: TextStyle(
             color: Color.fromRGBO(194, 194, 194, 100),
@@ -98,8 +98,6 @@ Widget bottom() => Column(
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(
-          height: 20,
-        )
+        
       ],
     );

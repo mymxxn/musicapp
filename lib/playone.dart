@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:music/muix.dart';
 
 class PlayOne extends StatefulWidget {
   const PlayOne({Key? key}) : super(key: key);
@@ -15,7 +14,7 @@ class _PlayOneState extends State<PlayOne> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(25, 20, 20, 100),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(25, 20, 20, 100),
+        backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -65,20 +64,17 @@ class _PlayOneState extends State<PlayOne> {
       title: Text(
         song,
         style:
-            TextStyle(color: Color.fromRGBO(194, 194, 194, 100), fontSize: 20),
+            const TextStyle(color: Color.fromRGBO(194, 194, 194, 100), fontSize: 20),
       ),
       subtitle: Text(
         arist,
         style:
-            TextStyle(color: Color.fromRGBO(194, 194, 194, 100), fontSize: 15),
+            const TextStyle(color: Color.fromRGBO(194, 194, 194, 100), fontSize: 15),
       ),
       trailing: const FaIcon(FontAwesomeIcons.ellipsisV,
           color: Color.fromRGBO(194, 194, 194, 100)),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Play()),
-        );
+        
       },
     );
   }
