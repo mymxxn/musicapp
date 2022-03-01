@@ -1,13 +1,25 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Asamp {
- 
+  List<Audio> song;
+  int index;
+  bool? notify;
   // Asamp({required this.song, required this.index});
+  Future<bool?> setNotifyValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    notify = await prefs.getBool("switchState");
+    print(notify);
+    return notify;
+  }
+
+  Asamp({required this.song, required this.index});
   final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer.withId("0");
-  oppenAsset({required List<Audio>? audios, required int index}) async {
-    _assetsAudioPlayer.open(Playlist(audios: audios, startIndex: index),
+  open() async {
+  bool? notify=await setNotifyValue();
+    _assetsAudioPlayer.open(Playlist(audios: song, startIndex: index),
         autoStart: true,
-        showNotification: true,
+        showNotification: notify == null || notify == true ? true : false,
         loopMode: LoopMode.single,
         notificationSettings: const NotificationSettings(stopEnabled: false));
   }

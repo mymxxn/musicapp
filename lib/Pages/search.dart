@@ -1,10 +1,10 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:music/Pages/nowplaying.dart';
 import 'package:music/asset.dart';
 import 'package:music/database/model.dart';
 import 'package:music/database/box.dart';
-import 'package:music/muix.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class Search extends StatefulWidget {
@@ -37,31 +37,6 @@ class _SearchState extends State<Search> {
 
   getSongs() {
     allsongsfromdb = box.get("musics") as List<AudioModel>;
-
-// Widget bottom() => Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: Container(
-//         height: 42,
-//         width: 56,
-//         decoration: BoxDecoration(
-//           color: Color.fromRGBO(51, 36, 36, 100),
-//           borderRadius: BorderRadius.circular(40),
-//         ),
-//         child: Padding(
-//           padding: const EdgeInsets.all(0),
-//           child: ListTile(
-//             leading: Image.asset(
-//               'assets/images/mus.jpg',
-//               height: 25,
-//               width: 30,
-//             ),
-//             title: Text('Winter Bear'),
-//             subtitle: Text('V'),
-//             trailing: Icon(Icons.play_arrow),
-//           ),
-//         ),
-//       ),
-//     );
   }
 
   @override
@@ -82,15 +57,17 @@ class _SearchState extends State<Search> {
       ));
     }
     return Scaffold(
-        backgroundColor: const Color.fromRGBO(25, 20, 20, 100),
+        backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text(
+          title: Text(
             "Search",
-            style: TextStyle(
-                color: Color.fromRGBO(194, 194, 194, 100),
-                fontSize: 30,
-                fontWeight: FontWeight.w600),
+            style: GoogleFonts.elMessiri(
+                textStyle: TextStyle(
+              color: Theme.of(context).iconTheme.color,
+              fontSize: 30,
+              fontWeight: FontWeight.w700,
+            )),
           ),
           elevation: 0,
         ),
@@ -99,24 +76,31 @@ class _SearchState extends State<Search> {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: TextFormField(
+                cursorColor: Theme.of(context).iconTheme.color,
                 autofocus: false,
                 keyboardType: TextInputType.text,
                 style:
-                    const TextStyle(color: Color.fromRGBO(194, 194, 194, 100)),
+                    TextStyle(color: Theme.of(context).primaryIconTheme.color),
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search_outlined,
-                      color: Color.fromRGBO(194, 194, 194, 100)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(
-                      width: 0,
-                      style: BorderStyle.none,
-                    ),
+                  prefixIcon: Icon(Icons.search_outlined,
+                      color: Theme.of(context).iconTheme.color),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        width: 2.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        width: 2.0),
                   ),
                   hintText: "Search songs",
+                  hintStyle: TextStyle(color: Theme.of(context).splashColor),
                   filled: true,
                   contentPadding: const EdgeInsets.all(16),
-                  fillColor: const Color.fromRGBO(51, 36, 36, 100),
+                  fillColor: Theme.of(context).primaryColor,
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -136,14 +120,13 @@ class _SearchState extends State<Search> {
                             return FutureBuilder(builder: (context, snapshot) {
                               return GestureDetector(
                                   onTap: () {
-                                    Asamp()
-                                        .oppenAsset(index: index, audios: song);
+                                    Asamp(song: song, index: index).open();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => Play(
-                                                index: index,
                                                 song: song,
+                                                // allsongsfromdb: allsongsfromdb,
                                               )),
                                     );
                                   },
@@ -156,59 +139,29 @@ class _SearchState extends State<Search> {
                                     title: Text(searchResult[index].title!,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                            color: Color.fromRGBO(
-                                                194, 194, 194, 100),
-                                            fontSize: 20)),
+                                        style: GoogleFonts.abhayaLibre(
+                                            textStyle: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryIconTheme
+                                                    .color,
+                                                fontSize: 20))),
                                     subtitle: Text(
                                         searchResult[index].artist ?? "Unknown",
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                            color: Color.fromRGBO(
-                                                194, 194, 194, 100),
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).splashColor,
                                             fontSize: 15)),
-                                    trailing: Padding(
-                                      padding: const EdgeInsets.only(right: 0),
-                                      child: PopupMenuButton<String>(
-                                        color: Colors.white70,
-                                        icon: const FaIcon(
-                                            FontAwesomeIcons.ellipsisV,
-                                            color: Color.fromRGBO(
-                                                194, 194, 194, 100)),
-                                        // onSelected: (String result) {
-                                        //   switch (result) {
-                                        //     case 'Liked songs':
-                                        //       print('added to liked songs');
-                                        //       break;
-                                        //     case 'playlist':
-                                        //       print('Playlist added');
-                                        //       break;
-                                        //     default:
-                                        //   }
-                                        // },
-                                        itemBuilder: (BuildContext context) =>
-                                            <PopupMenuEntry<String>>[
-                                          const PopupMenuItem<String>(
-                                            value: 'Liked',
-                                            child: Text('Add to liked songs'),
-                                          ),
-                                          const PopupMenuItem<String>(
-                                            value: 'Playlist',
-                                            child: Text('Add to Playlist'),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
                                   ));
                             });
                           }),
                     )
-                  : const Padding(
-                      padding: EdgeInsets.all(10),
+                  : Padding(
+                      padding: const EdgeInsets.all(10),
                       child: Text("Nothing!",
                           style: TextStyle(
-                              color: Color.fromRGBO(194, 194, 194, 100),
+                              color: Theme.of(context).primaryIconTheme.color,
                               fontSize: 20)),
                     )
               : const SizedBox()
