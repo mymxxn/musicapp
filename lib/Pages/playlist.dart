@@ -63,70 +63,86 @@ class _PlayliState extends State<Playli> {
             return ListView.builder(
                 itemCount: playlists!.length,
                 itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        for (var element in playlists[index]) {
-                          play.add(
-                            Audio.file(
-                              element.url!,
-                              metas: Metas(
-                                title: element.title,
-                                id: element.id.toString(),
-                                artist: element.artist,
-                              ),
-                            ),
-                          );
-                        }
-                        Asamp(song: play, index: index).open();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Play(
-                                    song: play,
-                                  )),
-                        );
-                      },
                       child: ListTile(
-                          leading: QueryArtworkWidget(
-                              id: playlists[index].id!,
-                              type: ArtworkType.AUDIO,
-                              nullArtworkWidget:
-                                  Image.asset("assets/images/logo.png")),
-                          title: Text(playlists[index].title!,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).primaryIconTheme.color,
-                                  fontSize: 20)),
-                          subtitle: Text(playlists[index].artist ?? "Unknown",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  color: Color.fromRGBO(194, 194, 194, 100),
-                                  fontSize: 15)),
-                          onLongPress: () => showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () async {
-                                            Navigator.pop(context);
+                        leading: QueryArtworkWidget(
+                            id: playlists[index].id!,
+                            type: ArtworkType.AUDIO,
+                            nullArtworkWidget:
+                                Image.asset("assets/images/logo.png")),
+                        title: Text(playlists[index].title!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryIconTheme.color,
+                                fontSize: 20)),
+                        subtitle: Text(playlists[index].artist ?? "Unknown",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                color: Color.fromRGBO(194, 194, 194, 100),
+                                fontSize: 15)),
+                        onLongPress: () => showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.pop(context);
 
-                                            setState(() {
-                                              playlists.removeAt(index);
-                                              box.put("Liked Songs", playlists);
-                                            });
-                                          },
-                                          child: Center(
-                                            child: Icon(
-                                              Icons.delete,
-                                              color: Theme.of(context)
-                                                  .iconTheme
-                                                  .color,
-                                            ),
-                                          ))
-                                    ],
-                                  ))),
+                                        setState(() {
+                                          playlists.removeAt(index);
+                                          box.put("Liked Songs", playlists);
+                                        });
+                                      },
+                                      child: Center(
+                                          child: Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryIconTheme
+                                                .color),
+                                      )),
+                                      style: ButtonStyle(
+                                          padding:
+                                              MaterialStateProperty.all<EdgeInsets>(
+                                                  const EdgeInsets.all(15)),
+                                          foregroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.red),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          18.0),
+                                                  side: BorderSide(
+                                                      color: Theme.of(context).splashColor,
+                                                      width: 2)))),
+                                    )
+                                  ],
+                                )),
+                        onTap: () {
+                          for (var element in playlists) {
+                            play.add(
+                              Audio.file(
+                                element.url!,
+                                metas: Metas(
+                                  title: element.title,
+                                  id: element.id.toString(),
+                                  artist: element.artist,
+                                ),
+                              ),
+                            );
+                          }
+                          Asamp(song: play, index: index).open();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Play(
+                                      song: play,
+                                    )),
+                          );
+                        },
+                      ),
                     ));
           }),
     );

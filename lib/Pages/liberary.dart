@@ -1,24 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:music/Pages/create.dart';
+import 'package:music/Pages/editplaylist.dart';
 import 'package:music/Pages/liked.dart';
 import 'package:music/Pages/playlist.dart';
-// import 'package:hive/hive.dart';
 import 'package:music/database/box.dart';
-// import 'package:music/playtwo.dart';
-// import 'package:assets_audio_player/assets_audio_player.dart';
-// import 'package:flutter/material.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:hive/hive.dart';
-// import 'package:music/asset.dart';
-// import 'package:music/database/box.dart';
-// import 'package:music/database/model.dart';
-// import 'package:music/main.dart';
-// import 'package:music/muix.dart';
-// import 'package:on_audio_query/on_audio_query.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class Playlist extends StatefulWidget {
@@ -35,6 +22,7 @@ class _PlaylistState extends State<Playlist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
@@ -127,30 +115,52 @@ class _PlaylistState extends State<Playlist> {
                                           .color,
                                       fontSize: 20),
                                 ),
-                                onLongPress: () => showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () async {
-                                                  Navigator.pop(context);
-                                                  await box
-                                                      .delete(playlists[index]);
-                                                  setState(() {
-                                                    playlists =
-                                                        box.keys.toList();
-                                                  });
-                                                },
-                                                child: Center(
-                                                  child: Icon(
-                                                    Icons.delete,
-                                                    color: Theme.of(context)
-                                                        .iconTheme
-                                                        .color,
-                                                  ),
-                                                ))
-                                          ],
-                                        )))
+                                trailing: PopupMenuButton(
+                                  color: Theme.of(context).primaryColor,
+                                  offset: Offset.zero,
+                                  itemBuilder: (BuildContext bc) => [
+                                    PopupMenuItem(
+                                      value: "0",
+                                      child: Text(
+                                        "Edit playlist",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Theme.of(context)
+                                                .iconTheme
+                                                .color),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: "1",
+                                      child: Text(
+                                        "Delete playlist",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Theme.of(context)
+                                                .iconTheme
+                                                .color),
+                                      ),
+                                    ),
+                                  ],
+                                  onSelected: (value) {
+                                    if (value == "1") {
+                                      box.delete(playlists[index]);
+                                    }
+                                    if (value == "0") {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => EditPlaylist(
+                                          playlistName: playlists[index],
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.more_vert_outlined,
+                                    color: Theme.of(context).iconTheme.color,
+                                  ),
+                                ),
+                              )
                             : Container()));
               })
         ],

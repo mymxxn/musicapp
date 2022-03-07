@@ -1,9 +1,7 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:music/database/box.dart';
-import 'package:music/database/model.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
 class Bottomplaying extends StatefulWidget {
   Bottomplaying({Key? key, required this.song}) : super(key: key);
@@ -100,59 +98,49 @@ class _BottomplayingState extends State<Bottomplaying> {
               ),
             ),
           ),
-          ...playlists.map((e) => e != "musics" && e != "Liked Songs"
-              ? ListTile(
-                  onTap: () async {
-                    playlistsongs = box.get(e);
-                    List existingSongs = [];
-                    print(e);
-                    existingSongs = playlistsongs!
-                        .where((element) =>
-                            element.id.toString() == widget.song.toString())
-                        .toList();
+          ...playlists
+              .map((e) => e != "musics" && e != "Liked Songs"
+                  ? ListTile(
+                      onTap: () async {
+                        playlistsongs = box.get(e);
+                        List existingSongs = [];
+                        existingSongs = playlistsongs!
+                            .where((element) =>
+                                element.id.toString() == widget.song.toString())
+                            .toList();
 
-                    if (existingSongs.isEmpty) {
-                      playlistsongs?.add(widget.song);
+                        if (existingSongs.isEmpty) {
+                          playlistsongs?.add(widget.song);
 
-                      await box.put(e, playlistsongs!);
-                      setState(() {});
-                      Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                            "Song added!",
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor),
-                          ),
-                          backgroundColor: Theme.of(context).splashColor));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                            "Song already exists!",
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor),
-                          ),
-                          backgroundColor: Theme.of(context).splashColor));
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  leading: Container(
-                    height: 50,
-                    width: 50,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/logo.png"),
-                          fit: BoxFit.cover),
-                      borderRadius: BorderRadius.all(Radius.circular(17)),
-                    ),
-                  ),
-                  title: Text(
-                    e.toString(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )
-              : Container())
+                          await box.put(e, playlistsongs!);
+                          setState(() {});
+                          Navigator.of(context).pop();
+                          Fluttertoast.showToast(
+                              msg: 'Song added to Playlist',
+                              textColor: Theme.of(context).primaryColor,
+                              backgroundColor: Theme.of(context).splashColor);
+                        } else {
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      leading: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/images/logo.png"),
+                              fit: BoxFit.cover),
+                          borderRadius: BorderRadius.all(Radius.circular(17)),
+                        ),
+                      ),
+                      title: Text(
+                        e.toString(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : Container())
               .toList()
         ],
       ),

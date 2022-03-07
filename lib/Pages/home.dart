@@ -1,8 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive/hive.dart';
 import 'package:music/Pages/bottomsong.dart';
 import 'package:music/Pages/nowplaying.dart';
 import 'package:music/Pages/settings.dart';
@@ -23,7 +22,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-
     fetch();
   }
 
@@ -66,12 +64,15 @@ class _HomeState extends State<Home> {
   }
 
   Audio find(List<Audio> source, String fromPath) {
-    return source.firstWhere((element) => element.path == fromPath);
+    return source.firstWhere(
+      (element) => element.path == fromPath,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           iconTheme: Theme.of(context).iconTheme,
@@ -105,6 +106,7 @@ class _HomeState extends State<Home> {
                   ListView.builder(
                     itemCount: allsongsfromdb.length,
                     itemBuilder: (context, index) {
+                      print('cfvgbn  $allsongsfromdb.length');
                       return ListTile(
                           title: Text(allsongsfromdb[index].title!,
                               maxLines: 1,
@@ -148,7 +150,6 @@ class _HomeState extends State<Home> {
                                               builder: (context) =>
                                                   Bottomplaying(
                                                     song: allsongsfromdb[index],
-                                                   
                                                   ));
                                         },
                                       ),
@@ -168,12 +169,17 @@ class _HomeState extends State<Home> {
                                                         .color),
                                               ),
                                               onTap: () async {
-                                                // final audios = box.get("musics"); final temp = audios.firstWhere((element) => element.id.toString()== widget.allson
                                                 likedsongs?.add(
                                                     allsongsfromdb[index]);
                                                 Navigator.pop(context);
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(content: Text("Added to Liked Songs!",style: TextStyle(),)));
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        'Song added to Liked Songs',
+                                                    textColor: Theme.of(context)
+                                                        .cardColor,
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .hintColor);
                                               },
                                             )
                                           : ListTile(
@@ -193,6 +199,14 @@ class _HomeState extends State<Home> {
                                                             .toString());
                                                 setState(() {});
                                                 Navigator.of(context).pop();
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        'Song removed from Liked Songs',
+                                                    textColor: Theme.of(context)
+                                                        .cardColor,
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .hintColor);
                                               },
                                             )
                                     ],
@@ -219,6 +233,7 @@ class _HomeState extends State<Home> {
                   ),
                   audioPlayer.builderCurrent(
                       builder: (BuildContext context, Playing? playing) {
+                    // audioPlayer.pause();
                     final myAudio = find(song, playing!.audio.assetAudioPath);
                     return Column(
                       children: [

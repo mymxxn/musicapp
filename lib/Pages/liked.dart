@@ -53,78 +53,92 @@ class _LikedState extends State<Liked> {
             return ListView.builder(
                 itemCount: likedSongs!.length,
                 itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        for (var element in likedSongs) { 
-                          likedplay.add(
-                            Audio.file(
-                              element.uri!,
-                              metas: Metas(
-                                title: element.title,
-                                id: element.id.toString(),
-                                artist: element.artist,
-                              ),
-                            ),
-                          );
-                        }
-                        Asamp(song: likedplay, index: index).open();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Play(
-                                    song: likedplay,
-                                    // allsongsfromdb: allsongsfromdb!,
-                                  )),
-                        );
-                      },
                       child: ListTile(
-                          leading: QueryArtworkWidget(
-                              id: likedSongs[index].id!,
-                              type: ArtworkType.AUDIO,
-                              nullArtworkWidget:
-                                  Image.asset("assets/images/logo.png")),
-                          title: Text(likedSongs[index].title!,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).primaryIconTheme.color,
-                                  fontSize: 20)),
-                          subtitle: Text(likedSongs[index].artist ?? "Unknown",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Theme.of(context).splashColor,
-                                  fontSize: 15)),
-                          onLongPress: () => showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () async {
-                                            Navigator.pop(context);
+                        leading: QueryArtworkWidget(
+                            id: likedSongs[index].id!,
+                            type: ArtworkType.AUDIO,
+                            nullArtworkWidget:
+                                Image.asset("assets/images/logo.png")),
+                        title: Text(likedSongs[index].title!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryIconTheme.color,
+                                fontSize: 20)),
+                        subtitle: Text(likedSongs[index].artist ?? "Unknown",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: Theme.of(context).splashColor,
+                                fontSize: 15)),
+                        onLongPress: () => showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.pop(context);
 
-                                            setState(() {
-                                              likedSongs.removeAt(index);
-                                              box.put(
-                                                  "Liked Songs", likedSongs);
-                                            });
-                                          },
-                                          child: Center(
-                                            child: FaIcon(
-                                              FontAwesomeIcons.heartBroken,
+                                        setState(() {
+                                          likedSongs.removeAt(index);
+                                          box.put("Liked Songs", likedSongs);
+                                        });
+                                      },
+                                      child: Center(
+                                        child: Text("Remove",
+                                            style: TextStyle(
                                               color: Theme.of(context)
-                                                  .iconTheme
+                                                  .primaryIconTheme
                                                   .color,
-                                            ),
-                                          ))
-                                    ],
-                                  ))
-                          // setState(() {
-                          //   likedSongs.removeAt(index);
-                          //   box.put("Liked Songs", likedSongs);
-                          // });
-
-                          ),
+                                            )),
+                                      ),
+                                      style: ButtonStyle(
+                                          padding:
+                                              MaterialStateProperty.all<EdgeInsets>(
+                                                  const EdgeInsets.all(15)),
+                                          foregroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.red),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          18.0),
+                                                  side: BorderSide(
+                                                      color: Theme.of(context).splashColor,
+                                                      width: 2)))),
+                                    )
+                                  ],
+                                )),
+                        onTap: () {
+                          print("abhb");
+                          for (var element in likedSongs) {
+                            likedplay.add(
+                              Audio.file(
+                                element.url!,
+                                metas: Metas(
+                                  title: element.title,
+                                  id: element.id.toString(),
+                                  artist: element.artist,
+                                ),
+                              ),
+                            );
+                          }
+                          Asamp(song: likedplay, index: index).open();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Play(
+                                      song: likedplay,
+                                      // allsongsfromdb: allsongsfromdb!,
+                                    )),
+                          );
+                        },
+                        // setState(() {
+                        //   likedSongs.removeAt(index);
+                        //   box.put("Liked Songs", likedSongs);
+                        // });
+                      ),
                     ));
           }),
     );
